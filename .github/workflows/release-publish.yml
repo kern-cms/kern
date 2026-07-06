@@ -1,10 +1,10 @@
 name: Publish npm package (OIDC trusted publishing)
 
 # Hoort in de PUBLIEKE org-repo (your-org/kern-cms-public) — sync-public.yml in de
-# private repo zet dit bestand daar automatisch neer, samen met packages/create-kern.
-# npm's Trusted Publisher-koppeling wijst naar precies dit workflow-bestand in
-# precies deze repo, dus verplaats of hernoem het niet zonder de instelling op
-# npmjs.com mee te wijzigen.
+# private repo zet dit bestand daar automatisch neer, samen met de rest van
+# packages/create-kern. npm's Trusted Publisher-koppeling wijst naar precies dit
+# workflow-bestand in precies deze repo, dus verplaats of hernoem het niet zonder
+# de instelling op npmjs.com mee te wijzigen.
 #
 # Trigger: de GitHub Release die release-build.yml (private repo) hier aanmaakt.
 #
@@ -43,9 +43,9 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       - name: npm ophogen naar een OIDC-compatibele versie
-        run: npm install -g npm@latest   # Trusted Publishing vereist npm ≥ 11.5.1
+        run: npm install -g npm@latest   # Trusted Publishing vereist npm >= 11.5.1
 
-      - name: Sanity-check: package.json-versie moet de tag matchen
+      - name: "Sanity-check: package.json-versie moet de tag matchen"
         working-directory: packages/create-kern
         run: |
           set -euo pipefail
