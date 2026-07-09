@@ -1,10 +1,10 @@
 name: Publish npm package (OIDC trusted publishing)
 
-# Hoort in de PUBLIEKE org-repo (your-org/kern-cms-public) — sync-public.yml in de
-# private repo zet dit bestand daar automatisch neer, samen met de rest van
-# packages/create-kern-cms. npm's Trusted Publisher-koppeling wijst naar precies dit
-# workflow-bestand in precies deze repo, dus verplaats of hernoem het niet zonder
-# de instelling op npmjs.com mee te wijzigen.
+# Hoort in de PUBLIEKE org-repo (kern-cms/kern) en wordt DAAR beheerd. sync-public.yml
+# in de private repo sluit .github bewust uit van de sync, zodat dit bestand nooit door
+# een sync wordt overschreven of verwijderd. npm's Trusted Publisher-koppeling wijst naar
+# precies dit workflow-bestand in precies deze repo, dus verplaats of hernoem het niet
+# zonder de instelling op npmjs.com mee te wijzigen.
 #
 # Trigger: de GitHub Release die release-build.yml (private repo) hier aanmaakt.
 #
@@ -12,7 +12,7 @@ name: Publish npm package (OIDC trusted publishing)
 #   1. Eén keer handmatig `npm publish --access public` vanaf je eigen machine
 #      vanuit packages/create-kern-cms, zodat het pakket op npmjs.com bestaat.
 #   2. npmjs.com → package settings → "Trusted Publisher" → GitHub Actions:
-#        organisatie/repo : your-org/kern-cms-public
+#        organisatie/repo : kern-cms/kern
 #        workflow-bestand  : release-publish.yml
 #        environment       : npm-publish
 #      (moet exact overeenkomen, inclusief hoofdlettergebruik van de org-naam)
@@ -39,11 +39,13 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          # Node 24 levert standaard npm >= 11.5.1 mee (vereist voor Trusted
+          # Publishing) én een intacte, meegebundelde sigstore-module voor de
+          # provenance-attestatie. Bewust GEEN `npm install -g npm@latest`: die
+          # in-place zelf-upgrade laat npm zonder sigstore achter, wat de publish
+          # liet crashen met "Cannot find module 'sigstore'".
+          node-version: "24"
           registry-url: "https://registry.npmjs.org"
-
-      - name: npm ophogen naar een OIDC-compatibele versie
-        run: npm install -g npm@latest   # Trusted Publishing vereist npm >= 11.5.1
 
       - name: "Sanity-check: package.json-versie moet de tag matchen"
         working-directory: packages/create-kern-cms
