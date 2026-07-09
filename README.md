@@ -28,7 +28,7 @@ Geen `npx`, of liever handmatig?
   project, kies de binary voor jouw platform, en draai `./kern init && ./kern start`.
 - **Docker**:
   ```bash
-  docker run -p 3000:3000 -v $(pwd)/data:/data ghcr.io/your-org/kern-cms:latest
+  docker run -p 3000:3000 -v $(pwd)/data:/data ghcr.io/kern-cms/kern:latest
   ```
 
 Zie [`docs/deployment.md`](docs/deployment.md) voor reverse-proxy-voorbeelden,
