@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen aan Kern CMS. Formaat losjes naar
 [Keep a Changelog](https://keepachangelog.com/); versienummers volgen semver.
 
+## 1.0.2 — 2026-07-09
+
+Herstelt een fout in de sync-workflow die 1.0.1's npm-publicatie liet mislukken.
+
+- **Sync kopieerde `create-kern-cms` één map te diep** — de map belandde als
+  `packages/create-kern-cms/create-kern-cms/` in de publieke repo, waardoor de
+  npm-publish-workflow `package.json` niet vond en faalde. De staging-stap maakt nu
+  alleen de parent-map aan, zodat `cp -R` de map op de juiste plek zet.
+
 ## 1.0.1 — 2026-07-09
 
 Geen functionele wijzigingen aan het product zelf; deze release herstelt de

@@ -17,7 +17,7 @@ function collector() {
 }
 
 const FAKE_BINARY = Buffer.from("stub-binary-contents-not-executable");
-const VERSION = "1.0.1"; // matches packages/create-kern-cms/package.json
+const VERSION = "1.0.2"; // matches packages/create-kern-cms/package.json
 
 let ctx;
 let tmpDir;
