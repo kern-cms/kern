@@ -3,6 +3,15 @@
 Alle noemenswaardige wijzigingen aan Kern CMS. Formaat losjes naar
 [Keep a Changelog](https://keepachangelog.com/); versienummers volgen semver.
 
+## 1.0.3 — 2026-07-09
+
+Herstelt de npm-publicatiestap, die bij 1.0.2 nog crashte.
+
+- **npm-publish faalde op `Cannot find module 'sigstore'`** — de publish-workflow
+  in de publieke repo deed `npm install -g npm@latest`, wat npm in-place vervangt en
+  zonder de sigstore-module achterlaat (nodig voor provenance bij OIDC-publicatie). De
+  workflow gebruikt nu Node 24 met de meegebundelde npm en laat de zelf-upgrade weg.
+
 ## 1.0.2 — 2026-07-09
 
 Herstelt een fout in de sync-workflow die 1.0.1's npm-publicatie liet mislukken.
