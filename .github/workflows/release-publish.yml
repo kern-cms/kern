@@ -32,10 +32,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: npm-publish
     steps:
-      - name: Checkout de tag van deze release
+      # Bewust de DEFAULT BRANCH uitchecken, niet de release-tag. De tag wordt door
+      # release-build (private repo) op de HEAD van deze main gezet; als de sync de
+      # nieuwe create-kern-cms nog niet had geplaatst, wees die tag naar een commit
+      # met de vórige versie. main loopt altijd bij, dus vanaf main + wachten op de
+      # juiste versie is immuun voor die tag-timing.
+      - name: Checkout de publieke repo (default branch)
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: main
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -47,18 +53,27 @@ jobs:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
 
-      - name: "Sanity-check: package.json-versie moet de tag matchen"
-        working-directory: packages/create-kern-cms
-        run: |
-          set -euo pipefail
-          PKG_VERSION="$(node -p "require('./package.json').version")"
-          TAG_VERSION="${GITHUB_REF_NAME#v}"
-          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
-            echo "::error::package.json ($PKG_VERSION) komt niet overeen met de tag ($TAG_VERSION)"
-            exit 1
-          fi
+      - name: Wacht tot de sync create-kern-cms op de release-versie heeft
         env:
           GITHUB_REF_NAME: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          # De sync-workflow (private repo) draait onafhankelijk; geef 'm tot ~5 min
+          # om create-kern-cms op de release-versie te zetten. Zo faalt de publish
+          # niet op een race, maar wacht 'm netjes af en pakt de juiste versie.
+          for i in $(seq 1 30); do
+            PKG_VERSION="$(node -p "require('./packages/create-kern-cms/package.json').version")"
+            if [ "$PKG_VERSION" = "$TAG_VERSION" ]; then
+              echo "create-kern-cms $PKG_VERSION komt overeen met tag $TAG_VERSION."
+              exit 0
+            fi
+            echo "Nog niet gesynct (package.json=$PKG_VERSION, tag=$TAG_VERSION); wacht 10s… ($i/30)"
+            sleep 10
+            git pull --ff-only origin main
+          done
+          echo "::error::create-kern-cms bereikte versie $TAG_VERSION niet op main binnen de wachttijd (bleef op $PKG_VERSION)."
+          exit 1
 
       - name: Publiceer naar npm
         working-directory: packages/create-kern-cms
