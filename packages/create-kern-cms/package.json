@@ -1,6 +1,6 @@
 {
   "name": "create-kern-cms",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Installeert Kern CMS: downloadt de kern-binary voor je platform van GitHub Releases en initialiseert een nieuw project.",
   "type": "module",
   "bin": {

@@ -3,6 +3,19 @@
 Alle noemenswaardige wijzigingen aan Kern CMS. Formaat losjes naar
 [Keep a Changelog](https://keepachangelog.com/); versienummers volgen semver.
 
+## 1.0.4 — 2026-07-09
+
+Herstelt de laatste twee fouten in de publicatieketen; 1.0.4 is de eerste versie
+die volledig automatisch op npm belandt.
+
+- **Sync sloeg gelijk-grote wijzigingen over** — `rsync -a` vergelijkt op grootte +
+  mtime, waardoor een versie-bump als `1.0.2` → `1.0.3` (even groot) niet naar de
+  publieke repo werd gekopieerd en `create-kern-cms` daar op de oude versie bleef
+  hangen. Nu met `--checksum`, dat op inhoud vergelijkt.
+- **npm-publish nu tag-timing-robuust** — de publish-workflow checkt nu de default
+  branch uit en wacht tot `create-kern-cms` de release-versie heeft, in plaats van een
+  vaste tag-commit die (bij een trage sync) nog de vorige versie kon bevatten.
+
 ## 1.0.3 — 2026-07-09
 
 Herstelt de npm-publicatiestap, die bij 1.0.2 nog crashte.
