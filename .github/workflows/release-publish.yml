@@ -39,11 +39,13 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          # Node 24 levert standaard npm >= 11.5.1 mee (vereist voor Trusted
+          # Publishing) én een intacte, meegebundelde sigstore-module voor de
+          # provenance-attestatie. Bewust GEEN `npm install -g npm@latest`: die
+          # in-place zelf-upgrade laat npm zonder sigstore achter, wat de publish
+          # liet crashen met "Cannot find module 'sigstore'".
+          node-version: "24"
           registry-url: "https://registry.npmjs.org"
-
-      - name: npm ophogen naar een OIDC-compatibele versie
-        run: npm install -g npm@latest   # Trusted Publishing vereist npm >= 11.5.1
 
       - name: "Sanity-check: package.json-versie moet de tag matchen"
         working-directory: packages/create-kern-cms
