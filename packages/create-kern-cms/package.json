@@ -1,10 +1,10 @@
 {
   "name": "create-kern-cms",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Installeert Kern CMS: downloadt de kern-binary voor je platform van GitHub Releases en initialiseert een nieuw project.",
   "type": "module",
   "bin": {
-    "create-kern-cms": "./bin/create-kern-cms.js"
+    "create-kern-cms": "bin/create-kern-cms.js"
   },
   "files": ["bin", "src"],
   "engines": {
@@ -16,9 +16,12 @@
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dkortekaas/kern-cms.git",
+    "url": "git+https://github.com/kern-cms/kern.git",
     "directory": "packages/create-kern-cms"
   },
-  "homepage": "https://github.com/dkortekaas/kern-cms#readme",
+  "bugs": {
+    "url": "https://github.com/kern-cms/kern/issues"
+  },
+  "homepage": "https://github.com/kern-cms/kern#readme",
   "keywords": ["kern-cms", "cms", "headless-cms", "installer", "scaffolding"]
 }

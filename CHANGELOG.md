@@ -3,6 +3,16 @@
 Alle noemenswaardige wijzigingen aan Kern CMS. Formaat losjes naar
 [Keep a Changelog](https://keepachangelog.com/); versienummers volgen semver.
 
+## 1.0.5 — 2026-07-10
+
+Eerste release die de volledig geautomatiseerde publicatieketen valideert (binaries →
+publieke repo → npm via Trusted Publishing), plus wat installer-politoer.
+
+- **Correcte pakket-metadata** — `repository`, `homepage` en `bugs` wijzen nu naar de
+  publieke repo `kern-cms/kern`; de `bin`-waarde is genormaliseerd (geen leidend `./`).
+- **README voor de npm-pakketpagina** — `create-kern-cms` had er nog geen, waardoor de
+  pagina op npmjs.com leeg bleef.
+
 ## 1.0.4 — 2026-07-09
 
 Herstelt de laatste twee fouten in de publicatieketen; 1.0.4 is de eerste versie
